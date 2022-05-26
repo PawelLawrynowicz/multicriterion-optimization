@@ -18,7 +18,3 @@ class Problem:
         A = math.floor(A/6)
         for j in range(n):
             self.d[j] = rng.nextInt(A, B)
-
-
-problem = Problem(10, 1410)
-print(problem.d.shape, problem.p.shape)
