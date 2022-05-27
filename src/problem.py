@@ -18,3 +18,25 @@ class Problem:
         A = math.floor(A/6)
         for j in range(n):
             self.d[j] = rng.nextInt(A, B)
+
+    def calculateMakespan(self, solution):
+        makespan = 0
+        timestable = self.p
+        queue1 = solution
+        queue2 = []
+        queue3 = []
+        while not(len(queue1)==0 and len(queue2)==0 and len(queue3)==0):
+            if len(queue3)!=0:
+                timestable[2][queue3[0]]-=1
+                if timestable[2][queue3[0]]==0:
+                    queue3.pop(0)
+            if len(queue2)!=0:
+                timestable[1][queue2[0]]-=1
+                if timestable[1][queue2[0]]==0:
+                    queue3.append(queue2.pop(0))
+            if len(queue1)!=0:
+                timestable[0][queue1[0]]-=1
+                if timestable[0][queue1[0]]==0:
+                    queue2.append(queue1.pop(0))
+            makespan+=1
+        return makespan
