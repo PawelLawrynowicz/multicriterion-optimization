@@ -1,4 +1,3 @@
-
 from RandomNumberGenerator import RandomNumberGenerator
 import math
 import numpy as np
@@ -19,13 +18,14 @@ class Problem:
         for j in range(n):
             self.d[j] = rng.nextInt(A, B)
 
-    def calculateMakespan(self, solution):
+    def calculateMakespan(self, solution: list):
         makespan = 0
-        timestable = self.p
-        queue1 = solution
+        timestable = self.p.copy()
+        queue1 = solution.copy()
         queue2 = []
         queue3 = []
         while not(len(queue1)==0 and len(queue2)==0 and len(queue3)==0):
+            makespan+=1
             if len(queue3)!=0:
                 timestable[2][queue3[0]]-=1
                 if timestable[2][queue3[0]]==0:
@@ -38,5 +38,80 @@ class Problem:
                 timestable[0][queue1[0]]-=1
                 if timestable[0][queue1[0]]==0:
                     queue2.append(queue1.pop(0))
-            makespan+=1
         return makespan
+
+    def calculateMaxTardiness(self, solution: list):
+        time = 0
+        maxTardiness = 0
+        timestable = self.p.copy()
+        queue1 = solution.copy()
+        queue2 = []
+        queue3 = []
+        while not(len(queue1)==0 and len(queue2)==0 and len(queue3)==0):
+            time+=1
+            if len(queue3)!=0:
+                timestable[2][queue3[0]]-=1
+                if timestable[2][queue3[0]]==0:
+                    tardiness = time - self.d[queue3[0]]
+                    if tardiness > 0 and tardiness > maxTardiness:
+                        maxTardiness = tardiness
+                    queue3.pop(0)
+            if len(queue2)!=0:
+                timestable[1][queue2[0]]-=1
+                if timestable[1][queue2[0]]==0:
+                    queue3.append(queue2.pop(0))
+            if len(queue1)!=0:
+                timestable[0][queue1[0]]-=1
+                if timestable[0][queue1[0]]==0:
+                    queue2.append(queue1.pop(0))
+        return maxTardiness
+
+    def calculateMaxLateness(self, solution: list):
+        time = 0
+        maxLateness = 0
+        timestable = self.p.copy()
+        queue1 = solution.copy()
+        queue2 = []
+        queue3 = []
+        while not(len(queue1)==0 and len(queue2)==0 and len(queue3)==0):
+            time+=1
+            if len(queue3)!=0:
+                timestable[2][queue3[0]]-=1
+                if timestable[2][queue3[0]]==0:
+                    lateness = time - self.d[queue3[0]]
+                    if lateness > maxLateness:
+                        maxLateness = lateness
+                    queue3.pop(0)
+            if len(queue2)!=0:
+                timestable[1][queue2[0]]-=1
+                if timestable[1][queue2[0]]==0:
+                    queue3.append(queue2.pop(0))
+            if len(queue1)!=0:
+                timestable[0][queue1[0]]-=1
+                if timestable[0][queue1[0]]==0:
+                    queue2.append(queue1.pop(0))
+        return maxLateness
+
+    def calculateLateness(self, solution: list):
+        time = 0
+        totalLateness = 0
+        timestable = self.p.copy()
+        queue1 = solution.copy()
+        queue2 = []
+        queue3 = []
+        while not(len(queue1)==0 and len(queue2)==0 and len(queue3)==0):
+            time+=1
+            if len(queue3)!=0:
+                timestable[2][queue3[0]]-=1
+                if timestable[2][queue3[0]]==0:
+                    totalLateness += time - self.d[queue3[0]]
+                    queue3.pop(0)
+            if len(queue2)!=0:
+                timestable[1][queue2[0]]-=1
+                if timestable[1][queue2[0]]==0:
+                    queue3.append(queue2.pop(0))
+            if len(queue1)!=0:
+                timestable[0][queue1[0]]-=1
+                if timestable[0][queue1[0]]==0:
+                    queue2.append(queue1.pop(0))
+        return totalLateness

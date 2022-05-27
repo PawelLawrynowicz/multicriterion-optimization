@@ -10,5 +10,9 @@ problem = Problem(n, seed)
 
 P += range(0, n)  # rozwiązanie początkowe
 
+print(problem.d)
 print(problem.p)
 print(problem.calculateMakespan(P))
+print(problem.calculateMaxTardiness(P))
+print(problem.calculateMaxLateness(P))
+print(problem.calculateLateness(P))
