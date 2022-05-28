@@ -92,7 +92,7 @@ class Problem:
                     queue2.append(queue1.pop(0))
         return maxLateness
 
-    def calculateLateness(self, solution: list):
+    def calculateTotalLateness(self, solution: list):
         time = 0
         totalLateness = 0
         timestable = self.p.copy()
@@ -115,3 +115,14 @@ class Problem:
                 if timestable[0][queue1[0]]==0:
                     queue2.append(queue1.pop(0))
         return totalLateness
+
+    def calculateCriteria(self, solution: list, num_of_criteria=2):
+        criteria_methods = {
+            0: self.calculateMakespan(solution),
+            1: self.calculateMaxTardiness(solution),
+            2: self.calculateMaxLateness(solution),
+            3: self.calculateTotalLateness(solution),
+        }
+        criteria = np.zeros(num_of_criteria)
+        for i in range(num_of_criteria):
+            criteria[i] = criteria_methods[i]
