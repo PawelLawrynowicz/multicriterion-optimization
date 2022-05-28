@@ -4,6 +4,6 @@ import random
 @dataclass
 class Data:
     seed = 1410
-    maxIter = 100
-    n = 10
+    maxIter = 400
+    n = 100
     random.seed(seed)
