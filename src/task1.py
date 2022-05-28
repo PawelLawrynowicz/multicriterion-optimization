@@ -57,20 +57,20 @@ def task1():
     problem = Problem(n, seed)
     
     x = list(range(n))
-    random.shuffle(x)                                       # losowe rozwiązanie początkowe
-    P += [(x.copy(), problem.calculateCriteria(x))]         # dodaj x do P
+    random.shuffle(x)                                           # losowe rozwiązanie początkowe
+    P += [(x.copy(), problem.calculateCriteria(x))]             # dodaj x do P
 
     while(it < maxIter): 
-        x_prime = defineRandomSwapNeighbour(x)              # wyznacz x' jako losowego sąsiada x
-        if isDominating(                                    # jeśli x' dominuje nad x
+        x_prime = defineRandomSwapNeighbour(x)                  # wyznacz x' jako losowego sąsiada x
+        if isDominating(                                        # jeśli x' dominuje nad x
             problem.calculateCriteria(x_prime), 
             problem.calculateCriteria(x)
             ):  
-            x = x_prime                                     # wykonaj x <- x'
-            P+=[(x.copy(), problem.calculateCriteria(x))]   # dodaj x' do P
-        elif acceptRandomly(p=0.1):                         # w przeciwnym razie wykonaj powyższy etap z prawadopodobieństwem p(it) = 0.1
-            x = x_prime                                     # wykonaj x <- x'
-            P+=[(x.copy(), problem.calculateCriteria(x))]   # dodaj x' do P
-        it += 1                                             # it <- it + 1
+            x = x_prime                                         # wykonaj x <- x'
+            P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
+        elif acceptRandomly(p=0.1):                             # w przeciwnym razie wykonaj powyższy etap z prawadopodobieństwem p(it) = 0.1
+            x = x_prime                                         # wykonaj x <- x'
+            P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
+        it += 1                                                 # it <- it + 1
     print(P)
 task1()
