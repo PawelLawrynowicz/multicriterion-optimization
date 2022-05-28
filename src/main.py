@@ -16,3 +16,10 @@ Metody wizualizacji:
 5. Odcinkowe współrzędne gwiazdowe (star coordinate system with line segments)
 6. Wykresy pajęczynowe (spider web charts).
 """
+
+from task1 import task1
+from data import Data
+
+
+if __name__ == '__main__':
+    task1(Data.n, Data.maxIter)
