@@ -126,3 +126,4 @@ class Problem:
         criteria = np.zeros(num_of_criteria)
         for i in range(num_of_criteria):
             criteria[i] = criteria_methods[i]
+        return criteria
