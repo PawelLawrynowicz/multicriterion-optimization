@@ -17,6 +17,10 @@ def task1(n, maxIter):
     random.shuffle(x)                                           # losowe rozwiązanie początkowe
     P += [(x.copy(), problem.calculateCriteria(x))]             # dodaj x do P
 
+    fig, ax = plt.subplots(4,2)
+    fig.tight_layout() 
+    columnNum=0
+    plotNum=0
     while(it < maxIter): 
         x_prime = defineRandomSwapNeighbour(x)                  # wyznacz x' jako losowego sąsiada x
         if isDominating(                                        # jeśli x' dominuje nad x
@@ -30,26 +34,31 @@ def task1(n, maxIter):
             P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
         it += 1                                                 # it <- it + 1
     
-    P = sorted(P, key=lambda x: int(x[1][0]))
-    
-    print(P)
-    plt.rcParams["figure.figsize"] = [7.00, 3.50]
-    plt.rcParams["figure.autolayout"] = True
-    xDim=[]
-    yDim=[]
-    xFront=[]
-    yFront=[]
-    frontVal=P[0][1][1]
-    for solution in P:
-        xDim.append(solution[1][0])
-        yDim.append(solution[1][1])
-        if solution[1][1]<=frontVal:
-            xFront.append(solution[1][0])
-            yFront.append(solution[1][1])
-            frontVal=solution[1][1]
-    plt.xlim(0, 10000)
-    plt.ylim(0, 10000)
-    plt.grid()
-    plt.scatter(xDim, yDim, marker="o", edgecolors="blue")#, markerfacecolor="green")
-    plt.scatter(xFront, yFront, marker="o", edgecolors="red")#, markerfacecolor="green")
+        P = sorted(P, key=lambda x: int(x[1][0]))
+        if it%200==0:
+            xDim=[]
+            yDim=[]
+            xFront=[]
+            yFront=[]
+            frontVal=P[0][1][1]
+            for solution in P:
+                if solution[1][1]<=frontVal:
+                    xFront.append(solution[1][0])
+                    yFront.append(solution[1][1])
+                    frontVal=solution[1][1]
+                    continue
+                xDim.append(solution[1][0])
+                yDim.append(solution[1][1])
+            #plt.xlim(0, 10000)
+            #plt.ylim(0, 10000)
+            ax[plotNum][columnNum].set_title("{iters} iters".format(iters=it))
+            ax[plotNum][columnNum].grid()
+            ax[plotNum][columnNum].scatter(xDim, yDim, marker="o")#, markerfacecolor="green")
+            ax[plotNum][columnNum].plot(xFront, yFront, '-o', mec="red", mfc="red", color="red")#, markerfacecolor="green")
+            plotNum+=1
+            if plotNum == 4: 
+                plotNum=0
+                columnNum+=1
     plt.show()
+
+    #plt.figure("HVI")
