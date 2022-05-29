@@ -18,8 +18,19 @@ Metody wizualizacji:
 """
 
 from task1 import task1
+from task2 import task2
 from data import Data
 
+def save_task2_data():
+    # zadanie 2
+    seeds = [1410, 9674, 155, 3486, 7158, 5325, 9742, 7081, 992, 3122]
+    f = open("pomiary_zad2.csv", "w")
+    for it, seed in enumerate(seeds):
+        Data.seed = seed
+        f.write("Przebieg " + str(it+1) + " seed: " + str(seed) + "\n")
+        result = task2(Data.n, Data.maxIter, output=False)
+        for i, val in result.items():
+            f.write(str(i)+";"+str(val)+"\n")
 
 if __name__ == '__main__':
-    task1(Data.n, Data.maxIter)
+    pass

@@ -6,7 +6,9 @@ from matplotlib import pyplot as plt
 import itertools
 from data import Data
 
-def task1(n, maxIter):
+random.seed(Data.seed)
+
+def task1(n, maxIter, numCriteria = 2, output=False):
 
     marker = itertools.cycle(('o', 's', 'D', '*')) 
     colors = itertools.cycle(('b', 'r', 'g', 'm'))
@@ -18,7 +20,7 @@ def task1(n, maxIter):
     
     x = list(range(n))
     random.shuffle(x)                                           # losowe rozwiązanie początkowe
-    P += [(x.copy(), problem.calculateCriteria(x))]             # dodaj x do P
+    P += [(x.copy(), problem.calculateCriteria(x, num_of_criteria=numCriteria))]             # dodaj x do P
 
     fig1, ax1 = plt.subplots(4,2)
     fig1.tight_layout() 
@@ -33,8 +35,8 @@ def task1(n, maxIter):
     while(it < maxIter): 
         x_prime = defineRandomSwapNeighbour(x)                  # wyznacz x' jako losowego sąsiada x
         if isDominating(                                        # jeśli x' dominuje nad x
-            problem.calculateCriteria(x_prime), 
-            problem.calculateCriteria(x)
+            problem.calculateCriteria(x_prime, num_of_criteria=numCriteria), 
+            problem.calculateCriteria(x, num_of_criteria=numCriteria)
             ):  
             x = x_prime                                         # wykonaj x <- x'
             P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
@@ -42,10 +44,6 @@ def task1(n, maxIter):
             x = x_prime                                         # wykonaj x <- x'
             P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
         it += 1                                                 # it <- it + 1
-    
-        
-        
-        
         if it%200==0:
             P = sorted(P, key=lambda x: int(x[1][0]))
             if it==200:
