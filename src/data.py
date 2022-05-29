@@ -6,3 +6,4 @@ class Data:
     seed = 1412
     maxIter = 1600
     n = 10
+
