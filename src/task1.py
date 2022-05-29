@@ -33,4 +33,3 @@ def task1(n, maxIter, numCriteria = 2, output=False):
     if output:
         print(P)
 
-task1(Data.n, Data.maxIter, numCriteria=4, output=True)
