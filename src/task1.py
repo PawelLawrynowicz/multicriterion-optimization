@@ -3,10 +3,13 @@ import random
 from RandomNumberGenerator import RandomNumberGenerator
 from utils import defineRandomSwapNeighbour, isDominating, acceptRandomly
 from matplotlib import pyplot as plt
-
+import itertools
 from data import Data
 
 def task1(n, maxIter):
+
+    marker = itertools.cycle(('o', 's', 'D', '*')) 
+    colors = itertools.cycle(('b', 'r', 'g', 'm'))
 
     P = list(list())
     it = 0
@@ -17,10 +20,16 @@ def task1(n, maxIter):
     random.shuffle(x)                                           # losowe rozwiązanie początkowe
     P += [(x.copy(), problem.calculateCriteria(x))]             # dodaj x do P
 
-    fig, ax = plt.subplots(4,2)
-    fig.tight_layout() 
+    fig1, ax1 = plt.subplots(4,2)
+    fig1.tight_layout() 
+    fig2, ax2 = plt.subplots(1)
+    fig2.tight_layout() 
     columnNum=0
     plotNum=0
+
+
+    zX = 0
+    zY = 0
     while(it < maxIter): 
         x_prime = defineRandomSwapNeighbour(x)                  # wyznacz x' jako losowego sąsiada x
         if isDominating(                                        # jeśli x' dominuje nad x
@@ -34,8 +43,17 @@ def task1(n, maxIter):
             P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
         it += 1                                                 # it <- it + 1
     
-        P = sorted(P, key=lambda x: int(x[1][0]))
+        
+        
+        
         if it%200==0:
+            P = sorted(P, key=lambda x: int(x[1][0]))
+            if it==200:
+                zX = P[len(P)-1][1][0]*1.2
+                zY = P[len(P)-1][1][1]*1.2
+                ax2.grid()
+                ax2.scatter(zX, zY, color='k',marker='>')
+                ax2.annotate("Z",(zX, zY))
             xDim=[]
             yDim=[]
             xFront=[]
@@ -51,14 +69,36 @@ def task1(n, maxIter):
                 yDim.append(solution[1][1])
             #plt.xlim(0, 10000)
             #plt.ylim(0, 10000)
-            ax[plotNum][columnNum].set_title("{iters} iters".format(iters=it))
-            ax[plotNum][columnNum].grid()
-            ax[plotNum][columnNum].scatter(xDim, yDim, marker="o")#, markerfacecolor="green")
-            ax[plotNum][columnNum].plot(xFront, yFront, '-o', mec="red", mfc="red", color="red")#, markerfacecolor="green")
+
+            ax1[plotNum][columnNum].set_title("{iters} iters".format(iters=it))
+            ax1[plotNum][columnNum].grid()
+            ax1[plotNum][columnNum].scatter(xDim, yDim, marker="o")#, markerfacecolor="green")
+            ax1[plotNum][columnNum].plot(xFront, yFront, '-o', mec="red", mfc="red", color="red")#, markerfacecolor="green")
+            
+            #fig2.set_title("{iters} iters".format(iters=it))
+            if it%400==0:
+                ax2.grid()
+                colour = next(colors)
+                ax2.scatter(xFront, yFront, marker=next(marker),color=colour)
+                xFront.append(zX)
+                xFront.append(zX)
+                xFront.append(xFront[0])
+                yFront.append(yFront[len(yFront)-1])
+                yFront.append(zY)
+                yFront.append(zY)
+                ax2.fill(xFront, yFront, color=colour,alpha=.2)
+
+                #calc and plot hvi
+
+                
+            
+            #ax[plotNum][columnNum].fill(xFront, yFront, 'y', alpha=0.5)
             plotNum+=1
             if plotNum == 4: 
                 plotNum=0
                 columnNum+=1
+            
+            
     plt.show()
 
     #plt.figure("HVI")
