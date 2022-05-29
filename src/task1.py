@@ -27,7 +27,7 @@ def task1(n, maxIter):
     columnNum=0
     plotNum=0
 
-
+    labels = ["Z"]
     zX = 0
     zY = 0
     while(it < maxIter): 
@@ -49,8 +49,8 @@ def task1(n, maxIter):
         if it%200==0:
             P = sorted(P, key=lambda x: int(x[1][0]))
             if it==200:
-                zX = P[len(P)-1][1][0]*1.2
-                zY = P[len(P)-1][1][1]*1.2
+                zX = P[len(P)-1][1][0]*1.3
+                zY = P[len(P)-1][1][1]*1.3
                 ax2.grid()
                 ax2.scatter(zX, zY, color='k',marker='>')
                 ax2.annotate("Z",(zX, zY))
@@ -79,18 +79,28 @@ def task1(n, maxIter):
             if it%400==0:
                 ax2.grid()
                 colour = next(colors)
-                ax2.scatter(xFront, yFront, marker=next(marker),color=colour)
-                xFront.append(zX)
-                xFront.append(zX)
-                xFront.append(xFront[0])
-                yFront.append(yFront[len(yFront)-1])
-                yFront.append(zY)
-                yFront.append(zY)
-                ax2.fill(xFront, yFront, color=colour,alpha=.2)
-
-                #calc and plot hvi
-
                 
+                xFill=xFront.copy()
+                yFill=yFront.copy()
+                xFill.append(zX)
+                xFill.append(zX)
+                xFill.append(xFront[0])
+                yFill.append(yFront[len(yFront)-1])
+                yFill.append(zY)
+                yFill.append(zY)
+
+                iters = len(xFill)-3
+                for i in range(iters, 0, -1):
+                    xFill.insert(i, xFill[i])
+                    yFill.insert(i, yFill[i-1])
+
+                HVI=0
+                for i in range(0, len(xFill)-2):
+                    HVI+=((zY-yFill[i])+(zY-yFill[i+1]))*(xFill[i+1]-xFill[i])/2
+
+                ax2.scatter(xFront, yFront, marker=next(marker),color=colour,label=str(it)+" iters, HVI: "+str(int(HVI)))
+                ax2.fill(xFill, yFill, color=colour,alpha=.2)
+
             
             #ax[plotNum][columnNum].fill(xFront, yFront, 'y', alpha=0.5)
             plotNum+=1
@@ -98,7 +108,7 @@ def task1(n, maxIter):
                 plotNum=0
                 columnNum+=1
             
-            
+    ax2.legend() 
     plt.show()
 
     #plt.figure("HVI")
