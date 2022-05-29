@@ -22,4 +22,6 @@ from data import Data
 
 
 if __name__ == '__main__':
-    task1(Data.n, Data.maxIter)
+
+    # zadanie 3
+    task1(Data.n, Data.maxIter, numCriteria=4)

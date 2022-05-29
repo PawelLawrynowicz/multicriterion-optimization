@@ -5,7 +5,9 @@ from utils import defineRandomSwapNeighbour, isDominating, acceptRandomly
 
 from data import Data
 
-def task1(n, maxIter):
+random.seed(Data.seed)
+
+def task1(n, maxIter, numCriteria = 2, output=False):
 
     P = list(list())
     it = 0
@@ -14,13 +16,13 @@ def task1(n, maxIter):
     
     x = list(range(n))
     random.shuffle(x)                                           # losowe rozwiązanie początkowe
-    P += [(x.copy(), problem.calculateCriteria(x))]             # dodaj x do P
+    P += [(x.copy(), problem.calculateCriteria(x, num_of_criteria=numCriteria))]             # dodaj x do P
 
     while(it < maxIter): 
         x_prime = defineRandomSwapNeighbour(x)                  # wyznacz x' jako losowego sąsiada x
         if isDominating(                                        # jeśli x' dominuje nad x
-            problem.calculateCriteria(x_prime), 
-            problem.calculateCriteria(x)
+            problem.calculateCriteria(x_prime, num_of_criteria=numCriteria), 
+            problem.calculateCriteria(x, num_of_criteria=numCriteria)
             ):  
             x = x_prime                                         # wykonaj x <- x'
             P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
@@ -28,4 +30,7 @@ def task1(n, maxIter):
             x = x_prime                                         # wykonaj x <- x'
             P += [(x.copy(), problem.calculateCriteria(x))]     # dodaj x' do P
         it += 1                                                 # it <- it + 1
-    print(P)
+    if output:
+        print(P)
+
+task1(Data.n, Data.maxIter, numCriteria=4, output=True)
