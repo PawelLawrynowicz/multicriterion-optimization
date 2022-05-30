@@ -5,5 +5,5 @@ import random
 class Data:
     seed = 1412
     maxIter = 1600
-    n = 10
+    n = 14
 

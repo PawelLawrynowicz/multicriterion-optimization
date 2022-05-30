@@ -19,6 +19,7 @@ Metody wizualizacji:
 
 from task1 import task1
 from task2 import task2
+from task3 import task3
 from data import Data
 
 def save_task2_data():
@@ -33,4 +34,4 @@ def save_task2_data():
             f.write(str(i)+";"+str(val)+"\n")
 
 if __name__ == '__main__':
-    pass
+    print(task3(Data.n,Data.maxIter,Data.seed))
