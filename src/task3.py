@@ -36,11 +36,30 @@ def task3(n, maxIter, seed, numCriteria=4):
             if isDominating(F[len(F)-1][1], P[j][1])==False and i!=j:
                 F.pop()
                 break
+
+    data_span = []
+    for i in range(numCriteria):
+        data_span.append([F[0][1][i],F[0][1][i]])
+    for sol in F:
+        for i, val in enumerate(sol[1]):
+            if(val<data_span[i][0]):
+                data_span[i][0]=val
+            if(val>data_span[i][1]):
+                data_span[i][1]=val
+
     while len(F)>3:
         F.pop(random.randint(0, len(F)-1))
     while len(F)<4:
         random.shuffle(x)                                           # losowe rozwiązanie początkowe
         F += [(x.copy(), problem.calculateCriteria(x, num_of_criteria=numCriteria))]
+        print("rozwiazanie losowe: {sol}".format(sol=F[len(F)-1]))
+
+    for sol in F:
+        for i, val in enumerate(sol[1]):
+            if(val<data_span[i][0]):
+                data_span[i][0]=val
+            if(val>data_span[i][1]):
+                data_span[i][1]=val
 
     criteria = []
     solutions = []
@@ -51,8 +70,6 @@ def task3(n, maxIter, seed, numCriteria=4):
         print(sol[1])
     for i in range(numCriteria):
         criteria.append("kryterium {num}".format(num=i+1))
-    
-    #data_span = [(10,60), (10,50), (10,40), (20,60)]
 
     for i, solution in enumerate(solutions):
         plt.plot(criteria, solution, label = labels[i])
@@ -60,10 +77,12 @@ def task3(n, maxIter, seed, numCriteria=4):
         plt.title("Ścieżki wartości")
         plt.ylabel("wartość kryterium")
 
-    """
     for i in range(len(criteria)):
         plt.scatter(criteria[i], data_span[i][0], c='black')
         plt.scatter(criteria[i], data_span[i][1], c='black')
-    """
+    
+    print("data span: {span}".format(span=data_span))
+    
     plt.grid()
     plt.show()
+
