@@ -36,7 +36,6 @@ def task3(n, maxIter, seed, numCriteria=4):
             if isDominating(F[len(F)-1][1], P[j][1])==False and i!=j:
                 F.pop()
                 break
-    print(F)
     while len(F)>3:
         F.pop(random.randint(0, len(F)-1))
     while len(F)<4:
@@ -49,6 +48,7 @@ def task3(n, maxIter, seed, numCriteria=4):
     for i, sol in enumerate(F):
         solutions.append(sol[1])
         labels.append("rozwiązanie {num}".format(num=i+1))
+        print(sol[1])
     for i in range(numCriteria):
         criteria.append("kryterium {num}".format(num=i+1))
     
