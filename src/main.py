@@ -34,4 +34,4 @@ def save_task2_data():
             f.write(str(i)+";"+str(val)+"\n")
 
 if __name__ == '__main__':
-    print(task3(Data.n,Data.maxIter,Data.seed))
+    task3(Data.n,Data.maxIter,Data.seed)

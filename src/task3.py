@@ -3,6 +3,7 @@ import random
 from RandomNumberGenerator import RandomNumberGenerator
 from utils import defineRandomSwapNeighbour, isDominating, acceptRandomly
 import numpy as np
+import matplotlib.pyplot as plt
 
 def task3(n, maxIter, seed, numCriteria=4):
     random.seed(seed)
@@ -36,8 +37,33 @@ def task3(n, maxIter, seed, numCriteria=4):
                 F.pop()
                 break
     print(F)
+    while len(F)>3:
+        F.pop(random.randint(0, len(F)-1))
     while len(F)<4:
         random.shuffle(x)                                           # losowe rozwiązanie początkowe
         F += [(x.copy(), problem.calculateCriteria(x, num_of_criteria=numCriteria))]
 
-    return F
+    criteria = []
+    solutions = []
+    labels = []
+    for i, sol in enumerate(F):
+        solutions.append(sol[1])
+        labels.append("rozwiązanie {num}".format(num=i+1))
+    for i in range(numCriteria):
+        criteria.append("kryterium {num}".format(num=i+1))
+    
+    #data_span = [(10,60), (10,50), (10,40), (20,60)]
+
+    for i, solution in enumerate(solutions):
+        plt.plot(criteria, solution, label = labels[i])
+        plt.legend()
+        plt.title("Ścieżki wartości")
+        plt.ylabel("wartość kryterium")
+
+    """
+    for i in range(len(criteria)):
+        plt.scatter(criteria[i], data_span[i][0], c='black')
+        plt.scatter(criteria[i], data_span[i][1], c='black')
+    """
+    plt.grid()
+    plt.show()
