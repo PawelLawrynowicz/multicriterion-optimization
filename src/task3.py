@@ -85,4 +85,3 @@ def task3(n, maxIter, seed, numCriteria=4):
     
     plt.grid()
     plt.show()
-

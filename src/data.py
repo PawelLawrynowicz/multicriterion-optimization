@@ -3,7 +3,7 @@ import random
 
 @dataclass
 class Data:
-    seed = 1435
+    seed = 1450
     maxIter = 1600
-    n = 20
+    n = 14
 
