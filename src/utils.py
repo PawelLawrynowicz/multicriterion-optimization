@@ -29,10 +29,10 @@ def isDominating(left, right):
             evaluation.append(options["same"])
         elif left[i] < right[i]:
             evaluation.append(options["better"])
-    # some are worse
-    if any([i == options["worse"] for i in evaluation]):
+    # all are worse
+    if all([i == options["worse"] for i in evaluation]):
         return False
-    # none are worse, some are better
+    # some may be worse, some are better
     elif any([i == options["better"] for i in evaluation]):
         return True
     else:  # none are worse, none are better; all are the same
